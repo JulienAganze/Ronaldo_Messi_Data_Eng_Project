@@ -5,7 +5,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.python import BranchPythonOperator
 from airflow.operators.dummy import DummyOperator
-
+import creds
 
 # task for downloading data from kaggle
 
@@ -53,7 +53,7 @@ def clean_messi():
 def create_database_tables_insert_values():
     import psycopg2
     #connect to default database
-    conn = psycopg2.connect("host=localhost dbname=postgres user=postgres password=text123")
+    conn = psycopg2.connect("host=localhost dbname=postgres user=postgres password="+creds.postgres_pass)
     conn.set_session(autocommit=True)
     cur = conn.cursor()
     
@@ -65,7 +65,7 @@ def create_database_tables_insert_values():
     conn.close()
     
     #connect to sparkfly database
-    conn = psycopg2.connect("host=localhost dbname=ronaldomessi user=postgres password=text123")
+    conn = psycopg2.connect("host=localhost dbname=ronaldomessi user=postgres password="+creds.postgres_pass)
     cur = conn.cursor()
     #print(f'connection is {conn} and cursor is {cur}')
     #return conn, conn.cursor()
